@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: empire-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-empire_leads}
+      POSTGRES_USER: ${DB_USER:-empire}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-empire} -d ${DB_NAME:-empire_leads}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  scraper:
+    build:
+      context: ./scripts/scraper
+      dockerfile: Dockerfile
+    container_name: empire-scraper
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./scripts/scraper:/app
+      - scraper_data:/app/data
+    command: ["python", "main_scraper.py", "--daemon"]
+
+volumes:
+  postgres_data:
+  scraper_data:

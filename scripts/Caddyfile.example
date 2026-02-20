@@ -1,0 +1,39 @@
+# Empire Sales Agent - Caddy Reverse Proxy Configuration
+# Copy to /etc/caddy/Caddyfile and replace YOUR_DOMAIN with your actual domain
+# Caddy automatically handles SSL/TLS via Let's Encrypt
+
+YOUR_DOMAIN.com {
+    # Twilio voice webhooks
+    handle /voice/webhook* {
+        reverse_proxy 127.0.0.1:3334
+    }
+
+    # Twilio voice streaming (WebSocket)
+    handle /voice/stream* {
+        reverse_proxy 127.0.0.1:3334
+    }
+
+    # OpenClaw agent webhooks (SMS inbound, etc)
+    handle /hooks/agent* {
+        reverse_proxy 127.0.0.1:3000
+    }
+
+    # Block everything else - don't expose the dashboard publicly
+    handle {
+        respond "Not Found" 404
+    }
+
+    # Security headers
+    header {
+        X-Content-Type-Options nosniff
+        X-Frame-Options DENY
+        Referrer-Policy strict-origin-when-cross-origin
+        -Server
+    }
+
+    # Logging
+    log {
+        output file /var/log/caddy/empire-access.log
+        format json
+    }
+}

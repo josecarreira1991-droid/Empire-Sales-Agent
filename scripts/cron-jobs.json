@@ -1,0 +1,53 @@
+{
+  "jobs": [
+    {
+      "name": "daily-scrape",
+      "schedule": "0 6 * * *",
+      "skill": "lead-scraper",
+      "action": "Run the daily scrape for Lee and Collier County",
+      "notify": "whatsapp"
+    },
+    {
+      "name": "morning-social-post",
+      "schedule": "0 8 * * *",
+      "skill": "social-poster",
+      "action": "Create and post today's content to Instagram, Facebook, and Google Business",
+      "notify": "whatsapp"
+    },
+    {
+      "name": "morning-calls",
+      "schedule": "0 9 * * 1-6",
+      "skill": "sales-caller",
+      "action": "Start morning calling session. Get contactable leads ordered by score and begin calling.",
+      "notify": "whatsapp"
+    },
+    {
+      "name": "process-followups",
+      "schedule": "0 10,14,16 * * 1-6",
+      "skill": "follow-up-scheduler",
+      "action": "Check for scheduled follow-ups due now and execute them.",
+      "notify": "whatsapp"
+    },
+    {
+      "name": "afternoon-calls",
+      "schedule": "0 13 * * 1-6",
+      "skill": "sales-caller",
+      "action": "Start afternoon calling session with remaining contactable leads.",
+      "notify": "whatsapp"
+    },
+    {
+      "name": "evening-report",
+      "schedule": "0 21 * * *",
+      "skill": "lead-manager",
+      "action": "Generate end-of-day report: calls made, SMS sent, leads contacted, estimates booked, opt-outs, social engagement.",
+      "notify": "whatsapp"
+    },
+    {
+      "name": "database-backup",
+      "schedule": "0 3 * * *",
+      "skill": "lead-manager",
+      "action": "Run database backup: pg_dump -U empire empire_leads > ~/backups/empire_leads_$(date +%Y%m%d).sql",
+      "notify": "whatsapp"
+    }
+  ]
+}
