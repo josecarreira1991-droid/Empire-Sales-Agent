@@ -66,7 +66,7 @@ if [ -d /root/.ssh ]; then
     chmod 600 /home/empire/.ssh/authorized_keys 2>/dev/null || true
 fi
 
-systemctl restart sshd
+systemctl restart ssh || systemctl restart sshd
 log "SSH hardened. New port: 2222"
 
 # ------------------------------------------
