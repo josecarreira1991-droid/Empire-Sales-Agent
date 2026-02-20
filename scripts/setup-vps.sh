@@ -179,13 +179,14 @@ log "OpenClaw installed"
 # ------------------------------------------
 # 12. Setup Python virtual environment
 # ------------------------------------------
-log "Setting up Python virtual environment..."
+log "Setting up Python virtual environment and installing packages..."
 su - empire -c '
     mkdir -p ~/empire-sales-agent
     cd ~/empire-sales-agent
     python3.12 -m venv venv
     source venv/bin/activate
     pip install --upgrade pip
+    pip install beautifulsoup4 selenium requests psycopg2-binary pandas pdfplumber schedule python-dotenv lxml undetected-chromedriver geopandas
 '
 
 # ------------------------------------------
